@@ -29,11 +29,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private TrailRenderer tr;
 
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<TrailRenderer> ();
 
         myAnimator = GetComponent<Animator>();        
         myBodyCollider = GetComponent<CapsuleCollider2D>();
@@ -83,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
     void OnJump(InputValue value)
     {
         //if (!isAlive) { return; }
-      //  if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return;}
+        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return;}
         
         if(value.isPressed)
         {
@@ -146,7 +148,11 @@ public class PlayerMovement : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        tr.emitting = true;
+
         yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+
         rb.gravityScale = originalGravity;
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);

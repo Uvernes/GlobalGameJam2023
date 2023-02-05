@@ -7,7 +7,7 @@ using TMPro;
 
 public class GameSession : MonoBehaviour
 {
-    [SerializeField] int playerLives = 3;
+    [SerializeField] int playerLives = 1;
     [SerializeField] int score = 0;
 
     [SerializeField] TextMeshProUGUI livesText;
@@ -34,14 +34,16 @@ public class GameSession : MonoBehaviour
 
     public void ProcessPlayerDeath()
     {
-        if (playerLives > 1)
-        {
-            TakeLife();
-        }
-        else
-        {
-            ResetGameSession();
-        }
+        TakeLife();
+
+        //if (playerLives > 1)
+        //{
+        //    TakeLife();
+        //}
+        //else
+        //{
+        //    ResetGameSession();
+        //}
     }
 
     public void AddToScore(int pointsToAdd)
@@ -61,7 +63,7 @@ public class GameSession : MonoBehaviour
     void ResetGameSession()
     {
         FindObjectOfType<ScenePersist>().ResetScenePersist();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Destroy(gameObject);
     }
 }
